@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { Schema, mongoose } = require('mongoose');
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {
@@ -11,12 +11,12 @@ const thoughtSchema = new mongoose.Schema({
         default: Date.now 
     },
     username: {
-        type: Schema.Types.ObjectID,
+        type: Schema.Types.ObjectId,
         ref: 'User',
     },
     reactions: [
         {
-            type: Schema.Types.ObjectID,
+            type: Schema.Types.ObjectId,
             ref: 'Reaction',
         }
     ],
