@@ -11,7 +11,6 @@ module.exports = {
     // Gets a single user by the Id
     getUserById(req, res) {
         User.findOne({ _id: req.params.userId })
-            // .select('-__v')
             .then((users) =>
                 !users
                     ? res.status(404).json({ message: ' This is not a user' })
@@ -22,7 +21,12 @@ module.exports = {
 
     // Creates a new user
     createUser(req, res) {
-        
+        User.create(req.body)
+        .then((user) => res.json(user))
+        .catch((err) => {
+            console.log(err)
+            return res.status(500).json(err)
+        })
     },
 
     // Deletes a single user
@@ -38,6 +42,12 @@ module.exports = {
 
     // Updates a single user
     updateUser(req, res) {
-
+        const updatedUser = User.findByIdAndUpdate(
+            { _id: req.params.userId },
+            { $set: { username: req.body.username, email: req.body.email } }
+        )
+        res.json(updatedUser)
+        .catch((err) => 
+            res.status(500).json(err.message));
     }
 }
