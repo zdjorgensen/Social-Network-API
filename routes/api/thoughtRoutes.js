@@ -9,7 +9,7 @@ const {
 
 router.route('/').get(getThoughts).post(createThought);
 router.route('/:thoughtId').get(getThoughtById);
-router.route('/:thoughtId').get(getThoughtById).delete(deleteThought);
-router.route('/:thoughtId').get(getThoughtById).post(updateThought);
+router.route('/delete/:thoughtId').get(getThoughtById).delete(deleteThought);
+router.route('/update/:thoughtId').get(getThoughtById).post(updateThought);
 
 module.exports = router;
