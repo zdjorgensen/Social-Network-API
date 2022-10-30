@@ -31,22 +31,33 @@ module.exports = {
 
     // Deletes a single thought
     deleteThought(req, res) {
-        const deletedThought = Thought.findByIdAndUpdate(
-            { _id: req.params.thoughtId },
-            { $pull: { thoughtId: req.params.thoughtId } },
+        Thought.findOneAndRemove({ _id: req.params.thoughtId })
+        .then((thought) =>
+            !thought
+                ? res.status(404).json({ message: 'This thought does not exist.' })
+                : Thought.findOneAndUpdate(
+                    { thoughts: req.params.thoughtId },
+                    { $pull: { thoughts: req.params.thoughtId } },
+                    { new: true }
+                ),
+            res.json({ message: 'Thought deleted.' })
         )
-        res.json(deletedThought)
-            .catch((err) =>
-                res.status(500).json(err.message));
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err.message);
+        });
     },
 
     // Updates a single thought
     updateThought(req, res) {
-        const updatedThought = Thought.findByIdAndUpdate(
+        Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $set: { thoughtText: req.body.thoughtText } }
+            { $set: { thoughtText: req.body.thoughtText, username: req.body.username, reactions: req.body.reactions }},
+            { runValidators: true, new: true }
         )
-        res.json(updatedThought)
+            .then((thought) =>
+                res.json(thought)
+            )
             .catch((err) =>
                 res.status(500).json(err.message));
     },
