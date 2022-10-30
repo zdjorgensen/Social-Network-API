@@ -49,5 +49,13 @@ module.exports = {
         res.json(updatedThought)
             .catch((err) =>
                 res.status(500).json(err.message));
-    }
+    },
+
+    createReaction(req,res) {
+
+    },
+
+    deleteReaction(req, res) {
+
+    },
 }

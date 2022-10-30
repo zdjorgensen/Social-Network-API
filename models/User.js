@@ -28,15 +28,5 @@ const userSchema = new Schema({
 });
 
 const User = model('User', userSchema);
-const handleError = (err) => console.error(err); 
-// User.create is not working here
-// User.create(
-//     {
-//         name: 'Zach',
-//         email: 'z.d.jorgensen@gmail.com',
-        
-//     },
-//     (err) => (err ? handleError(err) : console.log('User Created'))
-// );
 
 module.exports = User;

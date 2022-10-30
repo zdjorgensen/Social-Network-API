@@ -25,21 +25,5 @@ const thoughtSchema = new Schema(
 );
 
 const Thought = model('Thought', thoughtSchema);
-const handleError = (err) => console.error(err);
-
-// Thought.create is not working here
-// Thought.create(
-//     {
-//         thoughtText: 'Pretty cool',
-//         username: 'Zach',
-//         reactions: 'Nice'
-
-//     },
-//     (err) => (err ? handleError(err) : console.log('User Created'))
-// );
-
-// thoughtSchema.virtual('reactionCount').get(function () {
-//     return this.reactions.length();
-// })
 
 module.exports = Thought;

@@ -13,7 +13,7 @@ module.exports = {
         User.findOne({ _id: req.params.userId })
             .then((users) =>
                 !users
-                    ? res.status(404).json({ message: ' This is not a user' })
+                    ? res.status(404).json({ message: ' This is not a user.' })
                     : res.json(users)
             )
             .catch((err) => res.status(500).json(err));
@@ -22,32 +22,51 @@ module.exports = {
     // Creates a new user
     createUser(req, res) {
         User.create(req.body)
-        .then((user) => res.json(user))
-        .catch((err) => {
-            console.log(err)
-            return res.status(500).json(err)
-        })
+            .then((user) => res.json(user))
+            .catch((err) => {
+                console.log(err)
+                return res.status(500).json(err)
+            })
     },
 
     // Deletes a single user
     deleteUser(req, res) {
-        const deletedUser = User.findByIdAndUpdate(
-            { _id: req.params.userId },
-            { $pull: { userId: req.params.userId } },
-        )
-        res.json(deletedUser)
-        .catch((err) =>
-            res.status(500).json(err.message));
+        User.findOneAndRemove({ _id: req.params.userId })
+            .then((user) =>
+                !user
+                    ? res.status(404).json({ message: 'This user does not exist.' })
+                    : User.findOneAndUpdate(
+                        { users: req.params.userId },
+                        { $pull: { users: req.params.userId } },
+                        { new: true }
+                    ),
+                res.json({ message: 'User deleted.' })
+            )
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err.message);
+            });
     },
 
     // Updates a single user
     updateUser(req, res) {
-        const updatedUser = User.findByIdAndUpdate(
+        User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $set: { username: req.body.username, email: req.body.email } }
+            { $set: { username: req.body.username, email: req.body.email }},
+            { runValidators: true, new: true }
         )
-        res.json(updatedUser)
-        .catch((err) => 
-            res.status(500).json(err.message));
+            .then((user) =>
+                res.json(user)
+            )
+            .catch((err) =>
+                res.status(500).json(err.message));
+    },
+
+    createFriend(req, res) {
+
+    },
+
+    deleteFriend(req, res) {
+
     }
 }
