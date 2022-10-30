@@ -1,4 +1,4 @@
-const { Thought, User, Reaction } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
     // Gets all thoughts
@@ -52,7 +52,7 @@ module.exports = {
     updateUser(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $set: { username: req.body.username, email: req.body.email }},
+            { $set: { username: req.body.username, email: req.body.email } },
             { runValidators: true, new: true }
         )
             .then((user) =>
@@ -62,11 +62,33 @@ module.exports = {
                 res.status(500).json(err.message));
     },
 
-    createFriend(req, res) {
-
+    // Creates a friend
+    addFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $addToSet: { friends: req.body.friends } },
+            { new: true }
+        )
+            .then((user) =>
+                res.json(user)
+            )
+            .catch((err) =>
+                res.status(500).json(err.message)
+            );
     },
 
+    // Deletes a friend
     deleteFriend(req, res) {
-
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $pull: { friends: req.params.friendId } },
+            { new: true }
+        )
+            .then((user) =>
+                res.json(user)
+            )
+            .catch((err) =>
+                res.status(500).json(err.message)
+            );
     }
 }

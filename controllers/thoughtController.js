@@ -1,4 +1,4 @@
-const { Thought, User, Reaction } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
     // Gets all thoughts
@@ -62,10 +62,12 @@ module.exports = {
                 res.status(500).json(err.message));
     },
 
+    // Creates a reaction
     createReaction(req,res) {
 
     },
 
+    // Deletes a reaction
     deleteReaction(req, res) {
 
     },
